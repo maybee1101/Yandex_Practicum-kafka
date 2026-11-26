@@ -1,0 +1,7 @@
+FROM python:3.11-slim
+
+RUN pip install confluent_kafka confluent-kafka[avro] referencing jsonschema
+
+RUN mkdir -p /apps/scripts
+
+WORKDIR /apps/scripts
