@@ -108,6 +108,7 @@ services:
       - kafka-0
       - kafka-1
       - kafka-2
+    command: tail -f /dev/null ###чтобы работал вечно  
     networks:
       - kafka-network
     deploy:
