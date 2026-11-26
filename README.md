@@ -90,6 +90,45 @@
 
   ### Инструкция по запуску
 
+  1. Скачать репозиторий и перейти в папку /module_1/practical_work_2
+  2. Запустить сборку кластера Kafka (вместе с ним в том числе соберется образ для скриптов Python) командой `docker compose up -d`
+  3. Создать топик и проверить его командами из файла topic.txt
+  4. В терминале внутри папки ./module_1/practical_work_2 выполните команду для запуска продюсера. Так как по заданию приложение должно работать в двух экземплярах, то запускаем две команды - так мы запустим два контейнера с одним продюсером:
+
+     `docker exec -it practical_work_2-python-scripts-1 python producer_app.py`
+     `docker exec -it practical_work_2-python-scripts-2 python producer_app.py`
+     
+  6. В отдельных терминалах также внутри папки ./module_1/practical_work_2 выполните команды для запуска консьюмеров. Каждый запускается в двух экземплярах:
+
+     `docker exec -it practical_work_2-python-scripts-1 python BatchMessageConsumer.py`
+     `docker exec -it practical_work_2-python-scripts-2 python BatchMessageConsumer.py`
+
+     `docker exec -it practical_work_2-python-scripts-1 python SingleMessageConsumer.py`
+     `docker exec -it practical_work_2-python-scripts-2 python SingleMessageConsumer.py`
+
+### Шаги проверки решения 
+
+   1. Проверка, что кластер Kafka работает командой 
+       docker exec -it kafka-0 kafka-topics.sh \
+        --describe \
+        --topic m1_pw2 \
+        --bootstrap-server kafka-0:9092
+      Ожидаемый результат - PartitionCount: 3, ReplicationFactor: 2, три партиции с лидерами на разных брокерах.
+
+   2. Топик создан с правильными параметрами - в выводе describe должно быть указано 2 реплики. Вывод примерно такой :
+      
+      `Topic: m1_pw2   TopicId: HI5bB6XnRqGKZ3PC2VHt-Q PartitionCount: 3       ReplicationFactor: 2    Configs: 
+        Topic: m1_pw2   Partition: 0    Leader: 2       Replicas: 2,0   Isr: 2,0
+        Topic: m1_pw2   Partition: 1    Leader: 0       Replicas: 0,1   Isr: 0,1
+        Topic: m1_pw2   Partition: 2    Leader: 1       Replicas: 1,2   Isr: 1,2`
+
+    3. Продюсер отправляет сообщения -  в консоли отображаются сообщения об отправке сообщений
+    4. Консьюмер принимает сообщения - в консоли отображаются десериализованные сообщения в читаемом виде и уведомления об их обработке
+    5. По адресу http://localhost:8081/subjects отображается ["m1_pw2-value"] - зарегистрированная схема Avro
+    6. По адресу http://localhost:8080  отображаются топики, партиции, сообщения, консьюмер-группы
+      
+        
+     
   
 
   
