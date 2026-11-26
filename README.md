@@ -96,14 +96,18 @@
   4. В терминале внутри папки ./module_1/practical_work_2 выполните команду для запуска продюсера. Так как по заданию приложение должно работать в двух экземплярах, то запускаем две команды - так мы запустим два контейнера с одним продюсером:
 
      `docker exec -it practical_work_2-python-scripts-1 python producer_app.py`
+     
      `docker exec -it practical_work_2-python-scripts-2 python producer_app.py`
      
   6. В отдельных терминалах также внутри папки ./module_1/practical_work_2 выполните команды для запуска консьюмеров. Каждый запускается в двух экземплярах:
 
      `docker exec -it practical_work_2-python-scripts-1 python BatchMessageConsumer.py`
+     
      `docker exec -it practical_work_2-python-scripts-2 python BatchMessageConsumer.py`
 
+
      `docker exec -it practical_work_2-python-scripts-1 python SingleMessageConsumer.py`
+     
      `docker exec -it practical_work_2-python-scripts-2 python SingleMessageConsumer.py`
 
 ### Шаги проверки решения 
